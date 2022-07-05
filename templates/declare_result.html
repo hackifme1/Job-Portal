@@ -1,0 +1,55 @@
+{% extends "admin_bsbase.html" %}
+{% block csslink%} <link rel="icon" type="image/png" href="/static/signin/images/icons/manage_job.ico"/>
+<style>
+  .cntfd {
+      position: relative;
+      max-width: 100%; /* Maximum width */
+      margin: 0 auto; /* Center it */
+    }
+  
+  .cntfd img {vertical-align: middle;}
+  
+  .cntfd .cntt {
+    position: absolute;
+    top: 15%;
+    left: 7%;
+    background: rgb(0, 0, 0); /* Fallback color */
+    background: rgba(0, 0, 0, 0); /* Black background with 0.5 opacity */
+    color: #f1f1f1;
+    width: 80%;
+    padding: 20px;
+  }
+</style>
+{% endblock %}
+{% block title %} Result Declare {% endblock %}
+
+{% block content %}
+<div class="cntfd">
+  <img src="{{url_for('static', filename='/signin/images/icons/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg')}}" alt="..." style="width:100%; height:500px; opacity:0.7;"/> 
+  <div class="cntt">
+        <h3 class="text-sm-left" style="font-size:40px; color:green; text-shadow: 2px 2px 5px grey; text-decoration-line: overline;
+        text-decoration-color: red;"> Declare Result  </h3>
+  </div>
+</div>
+<br><br>
+<div class="card border-dark mb-3" style="border-radius:40px; border-color:green;  max-width: 60rem; margin-left: 160px; margin-right: 30px;">
+    <div class="card-header"><h4>Schedule Interview</h4></div>
+    <div class="card-body text-dark">
+      <form action = "{{ url_for('declare_result', id = id)}}" method = "POST">
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Candidate Id </label>
+          <input style="border-radius:40px; border-color:green;" type="text" class="form-control" name="rjobsekrid" placeholder="Enter Candidate Id for whom result is being declared" value = "1">
+        </div>         
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Verdict </label>
+            <input style="border-radius:40px; border-color:green;" type="text" class="form-control" name="rvrdct" placeholder="Enter Selected/Rejected" value = "Selected">
+        </div> 
+
+        <div class="form-group">
+            <input style="border-radius:20px;width:100px;" type="submit" value = "Submit" class="btn btn-dark">
+        </div>
+        </form>
+    </div>
+  </div>
+
+{% endblock %}

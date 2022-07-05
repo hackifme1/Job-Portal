@@ -1,0 +1,65 @@
+{% extends "admin_bsbase.html" %}
+{% block csslink%} <link rel="icon" type="image/png" href="/static/signin/images/icons/manage_user.ico"/>	
+<style>
+  .cntfd {
+      position: relative;
+      max-width: 100%; /* Maximum width */
+      margin: 0 auto; /* Center it */
+    }
+  
+  .cntfd img {vertical-align: middle;}
+  
+  .cntfd .cntt {
+    position: absolute;
+    top: 15%;
+    left: 7%;
+    background: rgb(0, 0, 0); /* Fallback color */
+    background: rgba(0, 0, 0, 0); /* Black background with 0.5 opacity */
+    color: #f1f1f1;
+    width: 60%;
+    padding: 20px;
+  }
+</style>
+{% endblock %}
+{% block title %} Manage Applicants {% endblock %}
+
+{% block content %}
+<div class="cntfd">
+  <img src="{{url_for('static', filename='/signin/images/icons/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg')}}" alt="..." style="width:100%; height:500px; opacity:0.7;"/> 
+  <div class="cntt">
+      <h3 class="text-sm-left" style="font-size:40px; color:green; text-shadow: 2px 2px 5px grey; text-decoration-line: overline;
+      text-decoration-color: red;"> Users   </h3>
+  </div>
+</div>
+
+<br> 
+  {% if users_registered %}
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">User id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Admin Controls</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for job in users_registered %}
+        <tr>
+          <td>{{ job[0] }}</td>
+            <td><a href="{{url_for('details',id = job[0])}}" class="font-italic font-weight-bold text-info"> {{ job[1] }} </a></td>
+            <td>{{ job[2] }}</td>
+            <td>
+              <a href="{{url_for('update_details',id = job[0])}}" > <button class="btn btn-outline btn-success" style="border-radius: 19px;"> Update Details </button> </a>
+              <a href="{{url_for('blockorunblock_user',id = job[0])}}" > <button class="btn btn-outline btn-warning" style="border-radius: 19px;"> {% if job[4] == "1" %} Block User {% else %} Unblock User {% endif %}</button> </a>
+              <a href="{{url_for('delete_user',id = job[0])}}" > <button class="btn btn-outline btn-danger" style="border-radius: 19px;"> Delete User </button> </a>
+            </td>         
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="margin-left: 30px; font-size: 20px;">No user registered yet!!</p>
+  {% endif %}
+
+{% endblock %}
