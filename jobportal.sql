@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.7.4
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: APRIL 11, 2021 
--- Server version: 10.1.30-MariaDB
--- PHP Version: 7.2.1
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -19,7 +10,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `scs`
+-- Database: `jobportal`
 --
 
 -- --------------------------------------------------------
@@ -137,11 +128,7 @@ CREATE TABLE `job` (
   `job_salary` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `job` (`job_id`, `company_id`, `job_title`, `job_type`, `job_description`, `job_salary`) VALUES
-(1, 1, 'studenttrainee', 'se', 'fgdfgfgfggf', '32444'),
-(2, 2, 'fte', 'data eng', 'tgertet', '23423'),
-(3, 3, 'intern', 'security eng', 'kjkjhlklk', '13453'),
-(4, 4, 'summerintern', 'automation eng', 'nvncmbcc', '34321');
+
 --
 -- Table structure for table `company`
 --
@@ -152,11 +139,7 @@ CREATE TABLE `company` (
   `location` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `company` (`company_id` , `name`, `location`) VALUES
-(1,'sams','bengaluru'),
-(2,'asd','klkta'),
-(3,'atl','engln'),
-(4,'cres','dljh');
+
 -- --------------------------------------------------------
 
 --
