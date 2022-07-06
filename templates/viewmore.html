@@ -1,0 +1,293 @@
+{% extends "admin_bsbase.html" %}
+{% block csslink%} 
+
+<link rel="icon" type="image/png" href="/static/signin/images/icons/manage_job.ico"/> 
+<style>
+  .cntfd {
+      position: relative;
+      max-width: 100%; /* Maximum width */
+      margin: 0 auto; /* Center it */
+    }
+  
+  .cntfd img {vertical-align: middle;}
+  
+  .cntfd .cntt {
+    position: absolute;
+    top: 40%;
+    left: 20%;
+    background: rgb(0, 0, 0); /* Fallback color */
+    background: rgba(0, 0, 0, 0); /* Black background with 0.5 opacity */
+    color: #f1f1f1;
+    width: 60%;
+    padding: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block title %} View More {% endblock %}
+
+
+{% block content %}
+
+    <div class="cntfd">
+        <img src="{{url_for('static', filename='/signin/images/icons/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg')}}" alt="..." style="width:100%; height:500px; opacity:0.7;"/> 
+        <div class="cntt">
+            <form method = "POST">
+                <div class="form-row">
+                  <div class="col" >
+                    <input type="text" class="form-control" style="border-radius: 19px; border-width: 2px;border-color:green; background:white;width:580px; margin-left: 40px;" name = "keyword" placeholder="Keywords (Eg - Job Title / Category / Company )">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" style="border-radius: 19px; border-width: 2px;border-color:green; background:white;" name = "location" placeholder="Location">
+                  </div>
+                  <div class="col">
+                  <button type="submit" class="btn btn-success" style="border-radius: 19px; margin-right: 20px; width:100px;"> Search </button> 
+                  </div>
+                </div>
+              </form>
+        </div>
+    </div>
+<br><br>
+
+    {%set str = id %}
+
+    {% if str == "location" %}
+    <div class="row">
+        <div class="col-md-6">
+          <div class="card" style="border-radius:40px; border-color:green;margin: 5px 20px 5px;">
+            <div class="card-header">Search By Location</div>
+            
+            <div class = "row">
+              <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lBengaluru")}}" style="margin-left:50px; color:#000000;"> <ul><u> Bengaluru </u></ul> </a>    
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="lMumbai")}}" style="margin-left:50px; color:#000000;"> <ul><u> Mumbai </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="lNoida")}}" style="margin-left:50px; color:#000000;"> <ul><u> Noida </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lHyderabad")}}" style="margin-left:50px; color:#000000;"> <ul><u> Hyderabad </u></ul></a>
+              </div>
+              <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lPune")}}" style="margin-left:50px; color:#000000;"> <ul><u> Pune </u></ul> </a>    
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="lChennai")}}" style="margin-left:50px; color:#000000;"> <ul><u> Chennai </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="lLucknow")}}" style="margin-left:50px; color:#000000;"> <ul><u> Lucknow </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lDelhi")}}" style="margin-left:50px; color:#000000;"> <ul><u> Delhi </u></ul></a>
+              </div>
+              <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lGurgaon")}}" style="margin-left:50px; color:#000000;"> <ul><u> Gurgaon </u></ul> </a>    
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="lRanchi")}}" style="margin-left:50px; color:#000000;"> <ul><u> Ranchi </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="lMysore")}}" style="margin-left:50px; color:#000000;"> <ul><u> Mysore </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lBhopal")}}" style="margin-left:50px; color:#000000;"> <ul><u> Bhopal </u></ul></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-sm-6">
+          <div class="card" style="border-radius:40px; border-color:green; margin-right: 20px; margin-top: 5px;">
+            <div class="card-header">Search By Location</div>
+            <div class = "row">
+                  <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lPatna")}}" style="margin-left:50px; color:#000000;"> <ul><u> Patna </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="lThane")}}" style="margin-left:50px; color:#000000;"> <ul><u> Thane </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="lManglore")}}" style="margin-left:50px; color:#000000;"> <ul><u> Mangalore </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lSingapore")}}" style="margin-left:50px; color:#000000;"> <ul><u> Singapore </u></ul></a>
+                  </div>
+                  <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lLondon")}}" style="margin-left:50px; color:#000000;"> <ul><u> London </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="lWarsaw")}}" style="margin-left:50px; color:#000000;"> <ul><u> Warsaw </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="lDublin")}}" style="margin-left:50px; color:#000000;"> <ul><u> Dublin </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lParis")}}" style="margin-left:50px; color:#000000;"> <ul><u> Paris </u></ul></a>
+                  </div>
+                  <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lSydney")}}" style="margin-left:50px; color:#000000;"> <ul><u> Sydney </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="lDubai")}}" style="margin-left:50px; color:#000000;"> <ul><u> Dubai </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="lCalifornia")}}" style="margin-left:50px; color:#000000;"> <ul><u> California </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="lWashington")}}" style="margin-left:50px; color:#000000;"> <ul><u> Washington </u></ul></a>
+                  </div>
+            </div>
+            </div>
+        </div>
+      
+      </div>            
+    {% elif str == "title" %}
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card" style="border-radius:40px; border-color:green; margin: 5px 20px 5px;">
+            <div class="card-header">Search By Title</div>
+            
+            <div class = "row">
+              <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tFrontend Developer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Frontend Developer </u></ul> </a>    
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="tFull Stack Developer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Full Stack Developer </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="tSoftware Tester")}}" style="margin-left:50px; color:#000000;"> <ul><u> Software Tester </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tSoftware Engineer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Software Engineer </u></ul></a>
+              </div>
+              <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tTester")}}" style="margin-left:50px; color:#000000;"> <ul><u> Tester </u></ul> </a>    
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="tBackend Developer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Backend Developer </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="tSocial Media Manager")}}" style="margin-left:50px; color:#000000;"> <ul><u> Social Media Manager </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tProduct Manager")}}" style="margin-left:50px; color:#000000;"> <ul><u> Product Manager </u></ul></a>
+              </div>
+              <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tResource Manager")}}" style="margin-left:50px; color:#000000;"> <ul><u> Resource Manager</u></ul> </a>     
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="tHR")}}" style="margin-left:50px; color:#000000;"> <ul><u> HR </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="tSecurity Engineer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Security Engineer </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tBlockchain Developer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Blockchain Developer </u></ul></a>
+              </div>
+            </div>
+
+           </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card" style="border-radius:40px; border-color:green; margin: 5px 20px 5px;">
+              <div class="card-header">Search By Title</div>
+              
+              <div class = "row">
+                <div class ="col-md-4">
+                  <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tAnalyst")}}" style="margin-left:50px; color:#000000;"> <ul><u> Analyst </u></ul> </a>    
+                  <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="tData Scientist")}}" style="margin-left:50px; color:#000000;"> <ul><u> Data Scientist </u></ul> </a>
+                  <a title="executive" href="{{url_for('job_detail', frm="inpage", id="tSoftware Tester")}}" style="margin-left:50px; color:#000000;"> <ul><u> Software Tester </u></ul></a>
+                  <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tData Engineer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Data Engineer </u></ul></a>
+                </div>
+                <div class ="col-md-4">
+                  <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tContent Writer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Content Writer </u></ul> </a>    
+                  <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="tAutomation Engineer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Automation Engineer </u></ul> </a>
+                  <a title="executive" href="{{url_for('job_detail', frm="inpage", id="tSales Manager")}}" style="margin-left:50px; color:#000000;"> <ul><u> Sales Manager </u></ul></a>
+                  <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tSecurity Manager")}}" style="margin-left:50px; color:#000000;"> <ul><u> Security Manager </u></ul></a>
+                </div>
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tRecruiter")}}" style="margin-left:50px; color:#000000;"> <ul><u> Recruiter </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="tSenior Developer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Senior Developer </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="tResearch Engineer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Research Engineer </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="tLead Engineer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Lead Engineer </u></ul></a>
+                  </div>
+             </div>
+        </div>
+    </div>
+    </div>
+      
+    {% elif str == "category" %}
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card" style="border-radius:40px; border-color:green; margin: 5px 20px 5px;">
+            <div class="card-header">Search By Category</div>
+            
+            <div class = "row">
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gManagerial")}}" style="margin-left:50px; color:#000000;"> <ul><u> Managerial </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="gOperational")}}" style="margin-left:50px; color:#000000;"> <ul><u> Operational  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="gTechnical")}}" style="margin-left:50px; color:#000000;"> <ul><u> Technical </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gProfessional")}}" style="margin-left:50px; color:#000000;"> <ul><u> Professional </u></ul></a>
+                </div>
+
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gSupervisory")}}" style="margin-left:50px; color:#000000;"> <ul><u> Supervisory  </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="gMarketing")}}" style="margin-left:50px; color:#000000;"> <ul><u> Marketing </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="gCustomer Support")}}" style="margin-left:50px; color:#000000;"> <ul><u> Customer Support </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gHuman Resource")}}" style="margin-left:50px; color:#000000;"> <ul><u> Human Resource </u></ul></a>
+                </div>
+                
+                <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gSales")}}" style="margin-left:50px; color:#000000;"> <ul><u> Sales</u></ul> </a>     
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="gNon Technical")}}" style="margin-left:50px; color:#000000;"> <ul><u> Non Technical </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="gAdministration")}}" style="margin-left:50px; color:#000000;"> <ul><u> Administration </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gComputing")}}" style="margin-left:50px; color:#000000;"> <ul><u> Computing </u></ul></a>
+                </div>
+            </div>
+
+           </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card" style="border-radius:40px; border-color:green; margin: 5px 20px 5px;">
+              <div class="card-header">Search By Category</div>
+              
+              <div class = "row">
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gDesign")}}" style="margin-left:50px; color:#000000;"> <ul><u> Design </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="gTraining")}}" style="margin-left:50px; color:#000000;"> <ul><u> Training  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="gEngineering")}}" style="margin-left:50px; color:#000000;"> <ul><u> Engineering </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gProfessional")}}" style="margin-left:50px; color:#000000;"> <ul><u> Professional </u></ul></a>
+                </div>
+
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gSupervisory")}}" style="margin-left:50px; color:#000000;"> <ul><u> Supervisory  </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="gServices")}}" style="margin-left:50px; color:#000000;"> <ul><u> Services </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="gHealthcare")}}" style="margin-left:50px; color:#000000;"> <ul><u> Healthcare </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gTourism")}}" style="margin-left:50px; color:#000000;"> <ul><u> Tourism </u></ul></a>
+                </div>
+                
+                <div class ="col-md-4">
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gLegal")}}" style="margin-left:50px; color:#000000;"> <ul><u> Legal </u></ul> </a>     
+                <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="gProduction")}}" style="margin-left:50px; color:#000000;"> <ul><u> Production </u></ul> </a>
+                <a title="executive" href="{{url_for('job_detail', frm="inpage", id="gLogistics")}}" style="margin-left:50px; color:#000000;"> <ul><u> Logistics </u></ul></a>
+                <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="gInfluencer")}}" style="margin-left:50px; color:#000000;"> <ul><u> Influencer </u></ul></a>
+                </div>
+             </div>
+        </div>
+    </div>
+    </div>
+    {% elif str == "company" %}
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card" style="border-radius:40px; border-color:green; margin: 5px 20px 5px;">
+            <div class="card-header">Search By Company</div>
+            
+            <div class = "row">
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cGoogle")}}" style="margin-left:50px; color:#000000;"> <ul><u> Google </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="cMicrosoft")}}" style="margin-left:50px; color:#000000;"> <ul><u> Microsoft  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="cSalesforce")}}" style="margin-left:50px; color:#000000;"> <ul><u> Salesforce </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cOracle")}}" style="margin-left:50px; color:#000000;"> <ul><u> Oracle </u></ul></a>
+                </div>
+
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cQualcomm")}}" style="margin-left:50px; color:#000000;"> <ul><u> Qualcomm </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="cAmazon")}}" style="margin-left:50px; color:#000000;"> <ul><u> Amazon  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="cVisa")}}" style="margin-left:50px; color:#000000;"> <ul><u> Visa </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cHackerrank")}}" style="margin-left:50px; color:#000000;"> <ul><u> Hackerrank </u></ul></a>
+                </div>
+                
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cHackerearth")}}" style="margin-left:50px; color:#000000;"> <ul><u> Hackerearth </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="cFlipkart")}}" style="margin-left:50px; color:#000000;"> <ul><u> Flipkart  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="cTekion")}}" style="margin-left:50px; color:#000000;"> <ul><u> Tekion </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cTesla")}}" style="margin-left:50px; color:#000000;"> <ul><u> Tesla </u></ul></a>
+                </div>
+            </div>
+
+           </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card" style="border-radius:40px; border-color:green; margin: 5px 20px 5px;">
+              <div class="card-header">Search By Company</div>
+              
+              <div class = "row">
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cGoldmanSachs")}}" style="margin-left:50px; color:#000000;"> <ul><u> GoldmanSachs </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="cAtlassian")}}" style="margin-left:50px; color:#000000;"> <ul><u> Atlassian  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="cArcesium")}}" style="margin-left:50px; color:#000000;"> <ul><u> Arcesium </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cDirecti")}}" style="margin-left:50px; color:#000000;"> <ul><u> Directi </u></ul></a>
+                </div>
+
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cDE Shaw")}}" style="margin-left:50px; color:#000000;"> <ul><u> DE Shaw </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="cCode Nation")}}" style="margin-left:50px; color:#000000;"> <ul><u> Code Nation  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="cBloomberg")}}" style="margin-left:50px; color:#000000;"> <ul><u> Bloomberg </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cSprinklr")}}" style="margin-left:50px; color:#000000;"> <ul><u> Sprinklr </u></ul></a>
+                </div>
+                
+                <div class ="col-md-4">
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cMeta")}}" style="margin-left:50px; color:#000000;"> <ul><u> Meta </u></ul> </a>    
+                    <a title="FTE" href="{{url_for('job_detail', frm="inpage", id="cIntuit")}}" style="margin-left:50px; color:#000000;"> <ul><u> Intuit  </u></ul> </a>
+                    <a title="executive" href="{{url_for('job_detail', frm="inpage", id="cAdobe")}}" style="margin-left:50px; color:#000000;"> <ul><u> Adobe </u></ul></a>
+                    <a title="Intern" href="{{url_for('job_detail', frm="inpage", id="cSamsung")}}" style="margin-left:50px; color:#000000;"> <ul><u> Samsung </u></ul></a>
+                </div>
+             </div>
+        </div>
+    </div>
+    </div>
+    {% endif %}
+<br>
+    <p style="margin-left:850px;"> Credit for image used: <a href="https://www.freepik.com/photos/technology-team">Technology team photo created by rawpixel.com - www.freepik.com</a> </p>
+{% endblock %}
