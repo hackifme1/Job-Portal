@@ -10,26 +10,26 @@ app.secret_key = "DBMS"
 # Configure Database
 app.config['MYSQL_HOST'] = "localhost"
 app.config['MYSQL_USER'] = "root"
-app.config['MYSQL_PASSWORD'] = "chiku2sql@1"
+app.config['MYSQL_PASSWORD'] = "enter_your_MYSQL_password_here"
 app.config['MYSQL_DB'] = "jobportal"
 
 mysql = MySQL(app)
 
-#editing req for this funcn
+#creating route for admin login
 @app.route('/admin_login', methods = ['GET', 'POST'])
 def admin_login():
     find = 0
     if request.method == 'POST':
-        # retrieving the entries made in the login form
+        # retrieving the entries made in the admin login form
         admin_loginDetails = request.form
         admin_email = admin_loginDetails['email1']
         admin_password = admin_loginDetails['password1']
         cur = mysql.connection.cursor()
-        # selecting email and password attributes from jobseeker entity to check if the email and its password exists in the entity
+        # selecting email and password attributes from admin entity to check if the email and its password exists in the entity
         find = cur.execute("SELECT * FROM admin WHERE (email, password) = (%s, %s) ", (admin_email, admin_password))
         admin_details = cur.fetchall()
         cur.close()
-    # login to home page if we find such an entry in the table or redirect to the same page
+        # login to admin home page if we find such an entry in the table or redirect to the same page
         if find != 0:
             admin_user = admin_details[0][0]
             session["admin_user"] = admin_user
@@ -48,37 +48,26 @@ def admin_login():
         
         return render_template('admin_login.html', find = find)
 
+
+# creating route for applicants management
 @app.route('/manage_applicants', methods = ['GET', 'POST'])
 def manage_applicants():
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # displaying the job details and corresponding company details of the jobs the user has applied for by using INNER JOIN on 
-        # job and company tables and using subquery for selecting jobs user has applied for from the apply table 
+        # retrieving all entries from jobseeker table to be shown on the page
         cur.execute("SELECT jobseeker_id, first_name, email, password, status FROM jobseeker")
         users_registered = cur.fetchall() 
         cur.close()
-        # cur2 = mysql.connection.cursor()
-        # selecting all the profile details of the user from profile table to display in the My Profile section
-        # cur2.execute("SELECT * FROM profile WHERE jobseeker_id = {}".format(user))
-        # profile_details = cur2.fetchall()
-        # if profile_details:
-        #     profile_details = profile_details[-1]
-        # # selecting the resume details of the user from resume table
-        # cur2.execute("SELECT * FROM resume WHERE jobseeker_id = {}".format(user))
-        # resume_details = cur2.fetchall()
-        # if resume_details:
-        #     resume_details = resume_details[-1]
-        # cur2.close()
         return render_template('manage_applicants.html', users_registered = users_registered)
     else:
         return redirect(url_for('admin_login'))
     
+# creating route for details of the jobseekrs
 @app.route('/details/<int:id>', methods = ['GET', 'POST'])
 def details(id):
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # displaying the job details and corresponding company details of the jobs the user has applied for by using INNER JOIN on 
-        # job and com    pany tables and using subquery for selecting jobs user has applied for from the apply table 
+        # displaying the details of a particular jobseeker
         cur.execute("SELECT first_name, last_name, phone_number, address, email, status, password FROM jobseeker WHERE jobseeker_id = {}".format(id))
         user_details = cur.fetchall() 
         if user_details:
@@ -86,7 +75,7 @@ def details(id):
             
         cur.close()
         cur2 = mysql.connection.cursor()
-        # selecting all the profile details of the user from profile table to display in the My Profile section
+        # selecting all the profile details of the user from profile table to display in details section
         cur2.execute("SELECT * FROM profile WHERE jobseeker_id = {}".format(id))
         profile_details = cur2.fetchall()
         if profile_details:
@@ -113,6 +102,7 @@ def details(id):
         return redirect(url_for('admin_login'))
 
 
+# creating route for updating details of applicants
 @app.route('/update_details/<int:id>', methods = ['GET', 'POST'])
 def update_details(id):
     if "admin_user" in session:
@@ -123,7 +113,7 @@ def update_details(id):
         cur.close()
         
         cur1 = mysql.connection.cursor()
-        # selecting all basuc details for the specified user
+        # selecting all basic details for the specified user
         exist = cur1.execute("SELECT * FROM jobseeker WHERE jobseeker_id = {}".format(id))
         jobseeker_data = cur.fetchall()
         cur1.close()
@@ -187,11 +177,13 @@ def update_details(id):
     else:
         return redirect(url_for('admin_login'))
     
+    
+# creating route for deleting applicants account
 @app.route('/delete_user/<int:id>')
 def delete_user(id):
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # selecting jobseeker details to display the name of the jobseeker on the home page who is currently logged in
+        # selecting jobseeker details to display the name of the specific jobseeker
         res = cur.execute("SELECT * FROM jobseeker WHERE jobseeker_id = {}".format(id))    
         # usr= cur.fetchall()
         
@@ -201,23 +193,24 @@ def delete_user(id):
             mysql.connection.commit()
             cur.close()
         else:
-        # if the user entry doesnt exist, then stay on the same by doing nothing
+            # if the user entry doesnt exist, then stay on the same by doing nothing
             return redirect(url_for('manage_applicants'))
             
         return redirect(url_for('manage_applicants'))
     else:
         return redirect(url_for('admin_login'))
 
+# creating route for blocking or unblocking an applicant from using the web portal
 @app.route('/blockorunblock_user/<int:id>')
 def blockorunblock_user(id):
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # selecting jobseeker details to display the name of the jobseeker on the home page who is currently logged in
+        # selecting jobseeker details to display the name of the jobseeker specified
         res = cur.execute("SELECT status FROM jobseeker WHERE jobseeker_id = {}".format(id))    
         usrid = cur.fetchall()
         
         if res > 0:
-            # if the user entry exists for that user, then delete the user from the database
+            # if the user entry exists for that user, then update the state of that user accordingly
             if usrid[0][0] == "1":
                 cur.execute("UPDATE jobseeker SET status = (%s) WHERE jobseeker_id = (%s)", ("0", id))
                 mysql.connection.commit()
@@ -227,19 +220,20 @@ def blockorunblock_user(id):
                 
             cur.close()    
         else:
-        # if the user entry doesnt exist, then stay on the same by doing nothing
+            # if the user entry doesnt exist, then stay on the same by doing nothing
             return redirect(url_for('manage_applicants'))
             
         return redirect(url_for('manage_applicants'))
     else:
         return redirect(url_for('admin_login'))
 
+
+# creating route for managing companies
 @app.route('/manage_company', methods = ['GET', 'POST'])
 def manage_company():
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # displaying the job details and corresponding company details of the jobs the user has applied for by using INNER JOIN on 
-        # job and company tables and using subquery for selecting jobs user has applied for from the apply table 
+        # displaying company details 
         cur.execute("SELECT * FROM company")
         cmpny = cur.fetchall() 
         cur.close()
@@ -247,11 +241,13 @@ def manage_company():
     else:
         return redirect(url_for('admin_login'))
 
+
+# creating route for editing companies details
 @app.route('/editcomp_details/<int:id>', methods = ['GET', 'POST'])
 def editcomp_details(id):
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # selecting all profile details for the specified user
+        # retrieving specified company details
         exist = cur.execute("SELECT * FROM company WHERE company_id = {}".format(id))
         company_data = cur.fetchall()
         cur.close()
@@ -262,14 +258,14 @@ def editcomp_details(id):
             comp_location = company_det['clocn']
             
             cur1 = mysql.connection.cursor()
-            # selecting all profile details for the logged in user
+            # selecting all details for the specified company
             exist = cur1.execute("SELECT * FROM company WHERE company_id = {}".format(id))
             if exist > 0:
-                # If the profile entry for user exists, then update the profile details in the profile table for that entry using UPDATE clause
+                # If the company entry exists, then update the company details in the company table for that entry using UPDATE clause
                 cur1.execute("UPDATE company SET name = (%s), location = (%s) WHERE company_id = (%s)", (comp_name, comp_location, id))
                 mysql.connection.commit()
             else:
-                # If the profile entry for that user doesnt exist in the profile table, then insert a record for profile details of that user
+                # If the company doesnt exist in the profile table, then insert a record for company details
                 cur1.execute("INSERT INTO company(name, location, company_id) VALUES (%s, %s, %s)", (comp_name, comp_location, id))
                 mysql.connection.commit()
             cur1.close()
@@ -283,24 +279,25 @@ def editcomp_details(id):
         return redirect(url_for('admin_login'))
     
     
+# creating route for adding company
 @app.route('/add_company', methods = ['GET', 'POST'])
 def add_company():
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # selecting all profile details for the specified user
+        # selecting all company details for the specified company
         exist = cur.execute("SELECT * FROM company")
         company_data = cur.fetchall()
         cur.close()
         
         if request.method == 'POST':
-            # retrieving the entries made in the signup form
+            # retrieving the entries made in the company form
             cmpnyDetails = request.form
             cmpnames = cmpnyDetails['cmpname']
             cmplocns = cmpnyDetails['cmplocn']
         
            
             cur = mysql.connection.cursor()
-                # creating a record by inserting the jobseeker details in jobseeker entity
+            # for checking if same company exists or not 
             exist1 = cur.execute("SELECT * FROM company WHERE name = '{}' AND location = '{}'".format(cmpnames, cmplocns))
             
             if exist1 == 0:
@@ -320,6 +317,8 @@ def add_company():
     
     return render_template(url_for('admin_login'))
 
+
+# creating route for managing job
 @app.route('/manage_job', methods = ['GET', 'POST'])
 def manage_job():
     if "admin_user" in session:
@@ -344,26 +343,27 @@ def manage_job():
                 count_search = 0
 
             jobsearch = cur.fetchall()
+            cur.close()
             return render_template('admin_jobsearch.html', jobsearch = jobsearch)
 
         cur = mysql.connection.cursor()
         # display all jobs and their details by selecting all jobs of companies using inner join on job and company
         count_jobs = cur.execute("SELECT job.job_title, job.job_type, company.name, company.location, job.job_salary, job.job_description, job.job_id FROM job INNER JOIN company ON job.company_id = company.company_id")
         # count_location = cur.execute("SELECT company.location FROM job INNER JOIN company ON job.company_id = company.company_id")
-        
-        if count_jobs > 0:
-            alljobs = cur.fetchall()
-            return render_template('manage_job.html', alljobs = alljobs)
+
+        alljobs = cur.fetchall()
+        cur.close()
+        return render_template('manage_job.html', alljobs = alljobs)
     else:
         return redirect(url_for('admin_login'))
 
 
-
+# creating route for adding job
 @app.route('/add_job', methods = ['GET', 'POST'])
 def add_job():
     if "admin_user" in session:        
         if request.method == 'POST':
-            # retrieving the entries made in the signup form
+            # retrieving the entries made in the job form
             jobdetails = request.form
             cmpnyid = jobdetails['cmpid']
             jobtitle = jobdetails['jbtitle']
@@ -393,7 +393,7 @@ def add_job():
     return render_template(url_for('admin_login'))
 
 
-
+# creating route for admin jobsearch
 @app.route('/admin_jobsearch')
 def admin_jobsearch():
     if "admin_user" in session:
@@ -402,6 +402,7 @@ def admin_jobsearch():
         return redirect(url_for('admin_login'))
     
 
+# creating route for viewing job details
 @app.route('/job_detail/<frm>/<id>', methods = ['GET', 'POST'])
 def job_detail(frm,id):
     if "admin_user" in session:        
@@ -453,7 +454,7 @@ def job_detail(frm,id):
 
         
         # displaying the job details and corresponding company details of the jobs the user has applied for by using INNER JOIN on 
-        # job and com    pany tables and using subquery for selecting jobs user has applied for from the apply table 
+        # job and company tables and using subquery for selecting jobs user has applied for from the apply table for categorised search
         if id[0] == 'l':
             cur = mysql.connection.cursor()
             exists = cur.execute("SELECT job.job_id, job.job_title, job.job_type, job.job_description, job.job_salary, company.name, company.location FROM job INNER JOIN company ON job.company_id = company.company_id WHERE (company.location LIKE '%{}%')".format(idact))
@@ -524,7 +525,7 @@ def job_detail(frm,id):
         return redirect(url_for('admin_login'))
     
 
-
+# creating route for viewmore items in different categories
 @app.route('/viewmore/<id>', methods = ['GET', 'POST'])
 def viewmore(id):
     if "admin_user" in session:
@@ -556,11 +557,12 @@ def viewmore(id):
         return redirect(url_for('admin_login'))
 
 
+# creating route for editing or updating job details
 @app.route('/editjob/<int:id>', methods = ['GET', 'POST'])
 def editjob(id):
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # selecting all profile details for the specified user
+        # selecting all job details for the specified job
         exist = cur.execute("SELECT * FROM job WHERE job_id = {}".format(id))
         job_data = cur.fetchall()
         cur.close()
@@ -572,14 +574,14 @@ def editjob(id):
             job_descr = job_det['jdescrpn']
             job_slry = job_det['jsalary']
             cur1 = mysql.connection.cursor()
-            # selecting all profile details for the logged in user
+            # selecting all job details for the specified job
             exist = cur1.execute("SELECT * FROM job WHERE job_id = {}".format(id))
             if exist > 0:
-                # If the profile entry for user exists, then update the profile details in the profile table for that entry using UPDATE clause
+                # If the job entry for job exists, then update the job details in the job table for that entry using UPDATE clause
                 cur1.execute("UPDATE job SET job_title = (%s), job_type = (%s), job_description = (%s), job_salary = (%s) WHERE job_id = (%s)", (job_titl, job_ctgry, job_descr, job_slry, id))
                 mysql.connection.commit()
             else:
-                # If the profile entry for that user doesnt exist in the profile table, then insert a record for profile details of that user
+                # If the job entry for that job doesnt exist in the job table, then insert a record for job details of that job
                 cur1.execute("INSERT INTO job(job_title, job_type, job_description, job_salary) VALUES (%s, %s, %s, %s)", (job_titl, job_ctgry, job_descr, job_slry))
                 mysql.connection.commit()
             cur1.close()
@@ -593,21 +595,22 @@ def editjob(id):
         return redirect(url_for('admin_login'))
 
 
+# creating route for deleting a job
 @app.route('/delete_job/<int:id>')
 def delete_job(id):
     if "admin_user" in session:
         cur = mysql.connection.cursor()
-        # selecting jobseeker details to display the name of the jobseeker on the home page who is currently logged in
+        # selecting job details for a specified job
         res = cur.execute("SELECT * FROM job WHERE job_id = {}".format(id))    
         # usr= cur.fetchall()
         
         if res > 0:
-            # if the user entry exists for that user, then delete the user from the database
+            # if the job entry exists for that job, then delete the job from the database
             cur.execute("DELETE FROM job WHERE job_id = {}".format(id))
             mysql.connection.commit()
             cur.close()
         else:
-        # if the user entry doesnt exist, then stay on the same by doing nothing
+            # if the job entry doesnt exist, then stay on the same by doing nothing
             return redirect(url_for('manage_job'))
             
         return redirect(url_for('manage_job'))
@@ -615,7 +618,7 @@ def delete_job(id):
         return redirect(url_for('admin_login'))
 
 
-
+# creating route for scheduling interview
 @app.route('/schedule_interview/<int:id>', methods = ['GET', 'POST'])
 def schedule_interview(id):
     if "admin_user" in session:
@@ -625,7 +628,9 @@ def schedule_interview(id):
             intrvw_date = intrvw_detls['idate']
             intrvw_time = intrvw_detls['itime']
             cur1 = mysql.connection.cursor()
-            # selecting all profile details for the logged in user
+            # selecting all jobseeker details for the specified id
+            # tackling different cases like if user has not applied then he or she wont be in apply table or if they have got result 
+            # for that job then also they wont be in apply table
             exist = cur1.execute("SELECT * FROM jobseeker WHERE jobseeker_id = {}".format(cndt_id))
             if exist > 0:
                 exist2 = cur1.execute("SELECT * FROM apply WHERE (jobseeker_id = {}) AND (job_id = {})".format(cndt_id, id))
@@ -660,7 +665,7 @@ def schedule_interview(id):
         return redirect(url_for('admin_login'))
     
     
-
+# creating route for declaring result
 @app.route('/declare_result/<int:id>', methods = ['GET', 'POST'])
 def declare_result(id):
     if "admin_user" in session:        
@@ -670,6 +675,9 @@ def declare_result(id):
             vrdct = res['rvrdct']
             cur1 = mysql.connection.cursor()
             
+            # before declaring result checking if that user exists or not and if that user exists then checking if his or her interview
+            # is scheduled or not, if scheduled then declare result and delete the entry from interview as well
+            # if not in scheduled then chk if declared already or not, if yes then showing the same else showing not scheduled
             exist = cur1.execute("SELECT * FROM jobseeker WHERE jobseeker_id = {}".format(cndt_id))
             if exist > 0:
                 exist2 = cur1.execute("SELECT * FROM apply WHERE jobseeker_id = {} AND job_id = {}".format(cndt_id, id))
@@ -708,9 +716,7 @@ def declare_result(id):
         return redirect(url_for('admin_login'))
     
     
-
-
- 
+# creating route for home
 @app.route('/', methods = ['GET', 'POST'])
 def login():
     find = 0
@@ -740,7 +746,7 @@ def login():
             if "user" in session:
                 return redirect(url_for("home"))
                         
-            error_msg = "Wrong Credentials!!"
+            error_msg = "User not registered!!"
             flash(f'{error_msg}', category='danger')
             return render_template('login.html', find = find)
     else:
@@ -749,6 +755,8 @@ def login():
         
         return render_template('login.html', find = find)
 
+
+# creating route for signup of user
 @app.route('/signup', methods = ['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -779,12 +787,14 @@ def signup():
             return redirect('signup')
     return render_template('signup.html')
 
+
+# creating route for admin home
 @app.route('/admin_home', methods = ['GET', 'POST'])
 def admin_home():
     if "admin_user" in session:
         admin_user = session["admin_user"]
         cur = mysql.connection.cursor()
-        # selecting jobseeker details to display the name of the jobseeker on the home page who is currently logged in
+        # selecting admin details to display the name of the admin on the home page who is currently logged in
         cur.execute("SELECT * FROM admin WHERE admin_id = {}".format(admin_user))
         admin_userdet = cur.fetchall()
         admin_name = admin_userdet[0][1]
@@ -792,6 +802,8 @@ def admin_home():
     else:
         return redirect(url_for('admin_login'))
     
+    
+# creating route for user home
 @app.route('/home', methods = ['GET', 'POST'])
 def home():
     if "user" in session:
@@ -805,6 +817,8 @@ def home():
     else:
         return redirect(url_for('login'))
 
+
+# creating route for user profile
 @app.route('/profile', methods = ['GET', 'POST'])
 def profile():
     if "user" in session:
@@ -833,6 +847,8 @@ def profile():
     else:
         return redirect(url_for('login'))
 
+
+# creating route for user manage profile
 @app.route('/manageprofile', methods = ['GET', 'POST'])
 def manageprofile():
     if "user" in session:
@@ -880,6 +896,8 @@ def manageprofile():
     else:
         return redirect(url_for('login'))
 
+
+# creating route for jobs shown to user
 @app.route('/jobs', methods = ['GET', 'POST'])
 def jobs():
     if "user" in session:
@@ -909,13 +927,14 @@ def jobs():
         cur = mysql.connection.cursor()
         # display all jobs and their details by selecting all jobs of companies using inner join on job and company
         count_jobs = cur.execute("SELECT job.job_title, job.job_type, company.name, company.location, job.job_salary, job.job_description, job.job_id FROM job INNER JOIN company ON job.company_id = company.company_id")
-        if count_jobs > 0:
-            alljobs = cur.fetchall()
-            return render_template('jobs.html', alljobs = alljobs)
+       
+        alljobs = cur.fetchall()
+        return render_template('jobs.html', alljobs = alljobs)
     else:
         return redirect(url_for('login'))
 
 
+# creating route for user jobsearch
 @app.route('/jobsearch')
 def jobsearch():
     if "user" in session:
@@ -923,6 +942,8 @@ def jobsearch():
     else:
         return redirect(url_for('login'))
 
+
+# creating route for applying to a job
 @app.route('/apply', methods = ['GET', 'POST'])
 def apply():
     if "user" in session:
@@ -949,6 +970,8 @@ def apply():
     else:
         return redirect(url_for('login'))
 
+
+# creating route for showing interviews scheduled for a user
 @app.route('/interviews')
 def interviews():   
     if "user" in session:
@@ -972,6 +995,8 @@ def interviews():
     else:
         return redirect(url_for('login'))
 
+
+# creating route for showing results of a user for jobs he or she interviewed
 @app.route('/results')
 def results():
     if "user" in session:
@@ -995,6 +1020,8 @@ def results():
     else:
         return redirect(url_for('login'))     
 
+
+# creating route for account summary of a user
 @app.route('/account')
 def account():
     if "user" in session:
@@ -1031,15 +1058,21 @@ def account():
     else:
         return redirect(url_for("login"))
 
+
+# creating route for logging out user
 @app.route('/logout')
 def logout():
     session.pop("user", None)
     return redirect(url_for("login"))
 
+
+# creating route for logging out admin
 @app.route('/admin_logout')
 def admin_logout():
     session.pop("admin_user", None)
     return redirect(url_for("admin_login"))
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)
