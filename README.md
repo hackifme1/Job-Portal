@@ -14,7 +14,7 @@
 ## Admin Home
 ![img](https://github.com/hackifme1/Job-Portal/blob/main/sample_ss/Admin_home.PNG)
 
-# Technology andd Languages Used:
+# Technology and Languages Used
   - Flask Framework
   - HTML, CSS, Python, MYSQL, SQL
   
